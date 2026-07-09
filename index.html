@@ -1,1 +1,544 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>סיפור שבמספרים | דאשבורד נתונים</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Frank+Ruhl+Libre:wght@400;500;700&family=Assistant:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F7F6F4;
+    --cream-2:#EFEDEA;
+    --plum:#2E2A33;
+    --plum-soft:#5C5763;
+    --rose:#9C6B7A;
+    --rose-light:#C9AEB6;
+    --gold:#A98A5B;
+    --white:#FFFFFF;
+    --line: rgba(46,42,51,0.12);
+  }
 
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--plum);
+    font-family:'Assistant', sans-serif;
+    font-weight:400;
+    overflow-x:hidden;
+  }
+
+  h1,h2,h3, .serif{
+    font-family:'Frank Ruhl Libre', 'Cormorant Garamond', serif;
+    font-weight:500;
+    margin:0;
+  }
+
+  .eyebrow{
+    font-family:'Assistant', sans-serif;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--rose);
+    font-weight:600;
+  }
+
+  /* subtle floating botanical-line background */
+  .bg-deco{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    opacity:0.35;
+  }
+  .bg-deco svg{position:absolute;}
+
+  a{color:inherit;}
+
+  /* ===== HEADER / NAV ===== */
+  header{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 6vw;
+    background:rgba(251,245,242,0.82);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Frank Ruhl Libre', serif;
+    font-size:1.25rem;
+    letter-spacing:.02em;
+  }
+  .brand .mark{
+    width:30px;height:30px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--rose-light), var(--rose) 60%, var(--gold) 130%);
+    display:inline-block;
+  }
+  nav a{
+    margin-inline-start:34px;
+    text-decoration:none;
+    font-size:0.95rem;
+    color:var(--plum-soft);
+    position:relative;
+    transition:color .25s;
+  }
+  nav a::after{
+    content:'';
+    position:absolute; right:0; bottom:-6px;
+    width:0; height:1px; background:var(--rose);
+    transition:width .3s ease;
+  }
+  nav a:hover{color:var(--plum);}
+  nav a:hover::after{width:100%;}
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;
+    z-index:1;
+    padding:9vh 6vw 8vh;
+    display:grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap:4vw;
+    align-items:center;
+  }
+  .hero-copy .eyebrow{margin-bottom:18px; display:block;}
+  .hero h1{
+    font-size:clamp(2.4rem, 4.6vw, 4.1rem);
+    line-height:1.12;
+    color:var(--plum);
+  }
+  .hero h1 em{
+    font-style:italic;
+    color:var(--rose);
+  }
+  .hero p.lede{
+    margin-top:26px;
+    max-width:46ch;
+    font-size:1.12rem;
+    line-height:1.85;
+    color:var(--plum-soft);
+  }
+  .hero-actions{
+    margin-top:38px;
+    display:flex; gap:18px; align-items:center;
+  }
+  .btn-primary{
+    background:var(--plum);
+    color:var(--cream);
+    padding:15px 34px;
+    border-radius:2px;
+    text-decoration:none;
+    font-size:.95rem;
+    letter-spacing:.03em;
+    position:relative;
+    overflow:hidden;
+    transition:transform .35s ease, box-shadow .35s ease;
+    box-shadow:0 10px 24px -12px rgba(46,42,51,0.5);
+  }
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 16px 30px -12px rgba(46,42,51,0.55);}
+  .btn-ghost{
+    text-decoration:none;
+    font-size:.95rem;
+    color:var(--plum-soft);
+    border-bottom:1px solid var(--rose);
+    padding-bottom:2px;
+  }
+
+  /* hero ornament: a clean metrics panel, echoing a real BI tile */
+  .hero-ornament{
+    position:relative;
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:26px;
+    box-shadow:0 24px 50px -30px rgba(46,42,51,0.35);
+  }
+  .hero-ornament .panel-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding-bottom:16px; margin-bottom:18px;
+    border-bottom:1px solid var(--line);
+    font-size:.78rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--plum-soft);
+  }
+  .hero-ornament .panel-head .dot-live{
+    width:7px; height:7px; border-radius:50%; background:var(--gold);
+    display:inline-block; margin-inline-end:6px;
+  }
+  .mini-stats{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .mini-stats .stat{
+    background:var(--cream);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:16px 14px;
+  }
+  .mini-stats .stat .num{
+    font-family:'Frank Ruhl Libre', serif;
+    font-size:1.7rem;
+    color:var(--plum);
+  }
+  .mini-stats .stat .lbl{
+    font-size:.78rem;
+    color:var(--plum-soft);
+    margin-top:4px;
+  }
+  .mini-bars{
+    display:flex; align-items:flex-end; gap:8px;
+    height:90px;
+    padding:0 2px;
+  }
+  .mini-bars .bar{
+    flex:1;
+    background:linear-gradient(180deg, var(--rose), var(--plum));
+    border-radius:2px 2px 0 0;
+    opacity:.85;
+  }
+
+  /* ===== SECTION DIVIDER ===== */
+  .divider{
+    display:flex; align-items:center; gap:18px;
+    padding:0 6vw;
+    margin:6vh 0;
+  }
+  .divider .line{flex:1; height:1px; background:var(--line);}
+  .divider .flourish{
+    color:var(--gold); font-size:.85rem; letter-spacing:.2em;
+  }
+
+  /* ===== ABOUT / CONTEXT STRIP ===== */
+  .context{
+    position:relative; z-index:1;
+    padding:0 6vw 8vh;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:34px;
+  }
+  .context .card{
+    background:var(--white);
+    border:1px solid var(--line);
+    padding:34px 28px;
+    border-radius:4px;
+    transition:transform .35s ease, box-shadow .35s ease;
+  }
+  .context .card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 22px 40px -24px rgba(46,42,51,0.35);
+  }
+  .context .card .idx{
+    font-family:'Frank Ruhl Libre', serif;
+    color:var(--rose);
+    font-size:1rem;
+    margin-bottom:14px;
+    display:block;
+  }
+  .context .card h3{
+    font-size:1.25rem;
+    margin-bottom:12px;
+    color:var(--plum);
+  }
+  .context .card p{
+    color:var(--plum-soft);
+    font-size:.98rem;
+    line-height:1.75;
+    margin:0;
+  }
+
+  /* ===== DASHBOARD SHOWCASE ===== */
+  .showcase{
+    position:relative; z-index:1;
+    padding:2vh 6vw 12vh;
+  }
+  .showcase-head{
+    text-align:center;
+    max-width:640px;
+    margin:0 auto 5vh;
+  }
+  .showcase-head .eyebrow{display:block; margin-bottom:16px;}
+  .showcase-head h2{
+    font-size:clamp(1.9rem, 3.4vw, 2.7rem);
+    line-height:1.25;
+  }
+  .showcase-head p{
+    margin-top:18px;
+    color:var(--plum-soft);
+    font-size:1.05rem;
+    line-height:1.8;
+  }
+
+  .frame-wrap{
+    position:relative;
+    max-width:1180px;
+    margin:0 auto;
+    padding:26px;
+    background:var(--white);
+    border-radius:6px;
+    box-shadow:0 30px 60px -35px rgba(46,42,51,0.3), 0 0 0 1px var(--line);
+  }
+  .frame-wrap::before{
+    content:'';
+    position:absolute;
+    top:0; right:0; left:0;
+    height:3px;
+    background:linear-gradient(90deg, var(--plum), var(--rose) 55%, var(--gold));
+    border-radius:6px 6px 0 0;
+  }
+
+  .frame-label{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:2px 6px 20px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:20px;
+  }
+  .frame-label .tag{
+    font-size:.78rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--rose);
+    font-weight:600;
+  }
+  .frame-label .status{
+    display:flex; align-items:center; gap:8px;
+    font-size:.85rem;
+    color:var(--plum-soft);
+  }
+  .status .pulse{
+    width:8px;height:8px;border-radius:50%;
+    background:#8CA37E;
+    box-shadow:0 0 0 4px rgba(140,163,126,0.2);
+  }
+
+  #vizContainer{
+    width:100%;
+    min-height:520px;
+    border-radius:4px;
+    overflow:hidden;
+    background: linear-gradient(180deg, var(--cream-2), var(--white));
+  }
+
+  .showcase-foot{
+    text-align:center;
+    margin-top:28px;
+    font-size:.9rem;
+    color:var(--plum-soft);
+  }
+  .showcase-foot a{
+    color:var(--rose);
+    text-decoration:none;
+    border-bottom:1px solid var(--rose);
+    padding-bottom:1px;
+  }
+
+  /* ===== CTA STRIP ===== */
+  .cta-strip{
+    position:relative; z-index:1;
+    margin:0 6vw 10vh;
+    padding:64px 6vw;
+    text-align:center;
+    background:linear-gradient(135deg, var(--plum) 0%, #47414F 100%);
+    color:var(--cream);
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .cta-strip h2{
+    color:var(--cream);
+    font-size:clamp(1.7rem,3vw,2.3rem);
+  }
+  .cta-strip p{
+    color:rgba(251,245,242,0.82);
+    margin-top:14px;
+    font-size:1.02rem;
+  }
+  .cta-strip .btn-primary{
+    background:var(--cream);
+    color:var(--plum);
+    margin-top:30px;
+    display:inline-block;
+    box-shadow:0 10px 26px -12px rgba(0,0,0,0.35);
+  }
+
+  /* ===== FOOTER ===== */
+  footer{
+    position:relative; z-index:1;
+    padding:34px 6vw 40px;
+    display:flex; justify-content:space-between; align-items:center;
+    border-top:1px solid var(--line);
+    font-size:.86rem;
+    color:var(--plum-soft);
+  }
+
+  @media (max-width: 880px){
+    .hero{grid-template-columns:1fr; text-align:center;}
+    .hero-copy p.lede{margin-inline:auto;}
+    .hero-actions{justify-content:center;}
+    .hero-ornament{max-width:280px; margin:0 auto;}
+    .context{grid-template-columns:1fr;}
+    nav{display:none;}
+    #vizContainer{min-height:380px;}
+    footer{flex-direction:column; gap:10px; text-align:center;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    * { transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-deco" aria-hidden="true">
+  <svg width="100%" height="100%">
+    <circle cx="8%" cy="18%" r="1.5" fill="#C97B92" opacity="0.5"/>
+    <circle cx="92%" cy="30%" r="1.5" fill="#C9A063" opacity="0.5"/>
+    <circle cx="15%" cy="70%" r="1.5" fill="#C97B92" opacity="0.4"/>
+    <circle cx="85%" cy="82%" r="1.5" fill="#C9A063" opacity="0.4"/>
+  </svg>
+</div>
+
+<header>
+  <div class="brand"><span class="mark"></span> אטלס נתונים</div>
+  <nav>
+    <a href="#context">התובנה</a>
+    <a href="#dashboard">הדאשבורד</a>
+    <a href="#cta">צור קשר</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">ויזואליזציית נתונים · Tableau</span>
+    <h1>מספרים יודעים<br><em>לספר סיפור</em></h1>
+    <p class="lede">
+      הדאשבורד שלפניכם הופך נתונים גולמיים לתובנה ברורה ומדויקת — בנוי לניתוח מהיר, לחקירה עצמאית ולקבלת החלטות מבוססות-נתונים.
+    </p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#dashboard">לצפייה בדאשבורד</a>
+      <a class="btn-ghost" href="#context">קצת הקשר</a>
+    </div>
+  </div>
+  <div class="hero-ornament">
+    <div class="panel-head"><span><span class="dot-live"></span>סקירת נתונים</span><span>Live</span></div>
+    <div class="mini-stats">
+      <div class="stat"><div class="num">12.4K</div><div class="lbl">רשומות שנותחו</div></div>
+      <div class="stat"><div class="num">98%</div><div class="lbl">דיוק נתונים</div></div>
+    </div>
+    <div class="mini-bars">
+      <div class="bar" style="height:40%;"></div>
+      <div class="bar" style="height:65%;"></div>
+      <div class="bar" style="height:50%;"></div>
+      <div class="bar" style="height:85%;"></div>
+      <div class="bar" style="height:60%;"></div>
+      <div class="bar" style="height:95%;"></div>
+      <div class="bar" style="height:70%;"></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="line"></div><span class="flourish">◆</span><div class="line"></div></div>
+
+<section class="context" id="context">
+  <div class="card">
+    <span class="idx">I.</span>
+    <h3>לראות את התמונה המלאה</h3>
+    <p>ויזואליזציה טובה לא מציגה רק מספרים — היא מציגה קשרים. כל תרשים כאן נבנה כדי לחשוף דפוס שקשה לראות בטבלה רגילה.</p>
+  </div>
+  <div class="card">
+    <span class="idx">II.</span>
+    <h3>אינטראקציה חופשית</h3>
+    <p>ניתן לסנן, לרחף מעל נקודות ולעצב תצוגה אישית. הדאשבורד מגיב בזמן אמת — זו לא תמונה סטטית, אלא כלי חקירה.</p>
+  </div>
+  <div class="card">
+    <span class="idx">III.</span>
+    <h3>עיצוב שמוביל למסקנה</h3>
+    <p>הצבע, הסדר וההיררכיה נבחרו בקפידה כדי שהעין תנוע בדיוק לאורך הסיפור שהנתונים מספרים.</p>
+  </div>
+</section>
+
+<section class="showcase" id="dashboard">
+  <div class="showcase-head">
+    <span class="eyebrow">בואו נצלול פנימה</span>
+    <h2>הדאשבורד המלא, חי ונושם</h2>
+    <p>הדמיה אינטראקטיבית שנבנתה ב-Tableau ומוטמעת ישירות כאן. אפשר לגלול, לסנן ולבחור — כל שינוי מתעדכן מיידית.</p>
+  </div>
+
+  <div class="frame-wrap">
+    <div class="frame-label">
+      <span class="tag">Live Dashboard</span>
+      <span class="status"><span class="pulse"></span> מחובר ל-Tableau Public</span>
+    </div>
+    <div id="vizContainer">
+      <div class='tableauPlaceholder' id='viz1' style='position: relative; width:100%;'>
+        <noscript>
+          <a href='#'>
+            <img alt='Dashboard 1' src='https://public.tableau.com/static/images/Bo/Book2_17835893025480/Dashboard1/1_rss.png' style='border: none' />
+          </a>
+        </noscript>
+        <object class='tableauViz' style='display:none;'>
+          <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+          <param name='embed_code_version' value='3' />
+          <param name='site_root' value='' />
+          <param name='name' value='Book2_17835893025480/Dashboard1' />
+          <param name='tabs' value='no' />
+          <param name='toolbar' value='yes' />
+          <param name='static_image' value='https://public.tableau.com/static/images/Bo/Book2_17835893025480/Dashboard1/1.png' />
+          <param name='animate_transition' value='yes' />
+          <param name='display_static_image' value='yes' />
+          <param name='display_spinner' value='yes' />
+          <param name='display_overlay' value='yes' />
+          <param name='display_count' value='yes' />
+          <param name='language' value='en-US' />
+        </object>
+      </div>
+      <script type='text/javascript'>
+        var divElement = document.getElementById('viz1');
+        var vizElement = divElement.getElementsByTagName('object')[0];
+        function sizeViz(){
+          if (window.innerWidth < 700) {
+            vizElement.style.minHeight='700px';
+            vizElement.style.maxHeight='700px';
+            vizElement.style.width='100%';
+          } else if (window.innerWidth < 900) {
+            vizElement.style.minHeight='650px';
+            vizElement.style.maxHeight='650px';
+            vizElement.style.width='100%';
+          } else {
+            vizElement.style.width='100%';
+            vizElement.style.minHeight='560px';
+            vizElement.style.maxHeight='800px';
+          }
+        }
+        sizeViz();
+        window.addEventListener('resize', sizeViz);
+        var scriptElement = document.createElement('script');
+        scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+        vizElement.parentNode.insertBefore(scriptElement, vizElement);
+      </script>
+    </div>
+  </div>
+  <p class="showcase-foot">הדאשבורד לא נטען? אפשר לצפות בו ישירות ב-
+    <a href="https://public.tableau.com/app/profile/lora.aronov/viz/Book2_17835893025480/Dashboard1" target="_blank" rel="noopener">Tableau Public</a>.
+  </p>
+</section>
+
+<section class="cta-strip" id="cta">
+  <span class="eyebrow" style="color:#C9AEB6;">רוצים דאשבורד כזה בשבילכם?</span>
+  <h2 style="margin-top:16px;">בואו נהפוך גם את הנתונים שלכם לסיפור</h2>
+  <p>עיצוב, ניתוח וסיפור מונחה-נתונים — מותאם בדיוק לצרכים שלכם.</p>
+  <a class="btn-primary" href="mailto:hello@example.com">דברו איתי</a>
+</section>
+
+<footer>
+  <div>© 2026 אטלס נתונים · נבנה באהבה לפרטים</div>
+  <div>מונע על ידי Tableau Public</div>
+</footer>
+
+</body>
+</html>
